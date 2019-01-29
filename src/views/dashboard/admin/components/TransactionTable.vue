@@ -3,7 +3,9 @@
     <el-table-column label="序號" max-width="50" prop="Event_id"></el-table-column>
     <el-table-column align="center" label="活動名稱" min-width="200" prop="title"></el-table-column>
     <el-table-column align="center" label="主辦單位" prop="organizer_id.name"></el-table-column>
-    <el-table-column align="center" label="創建時間" prop="create_time"></el-table-column>
+    <el-table-column align="center" label="創建時間">
+      <template slot-scope="scope">{{ timeFormat(scope.row.create_time, "YYYY/MM/DD HH:mm") }}</template>
+    </el-table-column>
     <el-table-column align="center" label="Status" prop="status" width="100"></el-table-column>
     <el-table-column align="center" label="Option">
       <template></template>
@@ -13,6 +15,7 @@
 
 <script>
 import axios from "axios";
+import dayjs from "dayjs";
 
 export default {
   filters: {},
@@ -25,6 +28,9 @@ export default {
     this.events = await this.getEvent();
   },
   methods: {
+    timeFormat(time, format) {
+      return dayjs(time).format(format);
+    },
     getEvent(params) {
       const field = [
         "Event_id",

@@ -14,7 +14,7 @@
     <el-col :lg="8" :sm="12" :xs="12" class="card-panel-col">
       <div @click="handleSetLineChartData('messages')" class="card-panel">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon class-name="card-panel-icon" icon-class="message"/>
+          <svg-icon class-name="card-panel-icon" icon-class="peoples"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">會員數量</div>
