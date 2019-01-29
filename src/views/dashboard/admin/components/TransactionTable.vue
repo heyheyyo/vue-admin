@@ -6,7 +6,9 @@
     <el-table-column align="center" label="創建時間">
       <template slot-scope="scope">{{ timeFormat(scope.row.create_time, "YYYY/MM/DD HH:mm") }}</template>
     </el-table-column>
-    <el-table-column align="center" label="Status" prop="status" width="100"></el-table-column>
+    <el-table-column align="center" label="Status" prop="status" width="100">
+      <template slot-scope="scope">{{ chengeStatus(scope.row.status) }}</template>
+    </el-table-column>
     <el-table-column align="center" label="Option">
       <template></template>
     </el-table-column>
@@ -30,6 +32,12 @@ export default {
   methods: {
     timeFormat(time, format) {
       return dayjs(time).format(format);
+    },
+    chengeStatus(status) {
+      const tempDate = {
+        event_allow: "審核通過"
+      };
+      return tempDate[status];
     },
     getEvent(params) {
       const field = [

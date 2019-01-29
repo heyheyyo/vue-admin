@@ -50,6 +50,7 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
+          data.token = 'admin'
           commit('SET_TOKEN', data.token)
           setToken(response.data.token)
           resolve()
@@ -74,7 +75,6 @@ const user = {
           } else {
             reject('getInfo: roles must be a non-null array!')
           }
-
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
@@ -102,6 +102,7 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
+        console.log(state)
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
