@@ -6,6 +6,7 @@
 import echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 import { debounce } from "@/utils";
+import dayjs from "dayjs";
 
 export default {
   props: {
@@ -86,26 +87,26 @@ export default {
         this.__resizeHandler();
       }
     },
+    setDate() {
+      const dataList = [];
+      const Today = Date.now();
+      for (let i = 0; i < 14; i++) {
+        dataList.push(
+          dayjs(Today + i * 60 * 60 * 24 * 1000).format("YYYY/MM/DD")
+        );
+      }
+      return dataList;
+    },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: [
-            "Jen",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Agu",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-          ],
-          boundaryGap: false,
+          data: this.setDate(),
+          boundaryGap: true,
           axisTick: {
-            show: false
+            show: false,
+            nameTextStyle: {
+              fontSize: 10
+            }
           }
         },
         grid: {

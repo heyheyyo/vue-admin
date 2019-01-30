@@ -19,22 +19,12 @@ import PanelGroup from "./components/PanelGroup";
 import LineChart from "./components/LineChart";
 import TransactionTable from "./components/TransactionTable";
 
+import axios from "axios";
+
 const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
+  newEvents: {
+    expectedData: [],
+    actualData: []
   }
 };
 
@@ -51,12 +41,42 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newEvents
     };
   },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type];
+    },
+    getEvent(params) {
+      const field = [];
+      const populate = ["location.city", "hashtag_list"];
+      const config = {
+        params: {
+          _field: field.join(","),
+          _populate: populate.join(","),
+          display: true,
+          ...params
+        }
+      };
+      return axios
+        .get("http://localhost:3000/api/v1/events", config)
+        .then(res => res.data)
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  },
+  async created() {
+    const temp_params = {};
+    const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    for (let i = 0; i < 14; i++) {
+      temp_params["create_time[$gte]"] =
+        Date.parse(start) + i * 24 * 60 * 60 * 1000;
+      temp_params["create_time[$lt]"] =
+        Date.parse(start) + (i + 1) * 24 * 60 * 60 * 1000;
+      const events = await this.getEvent(temp_params);
+      lineChartData.newEvents.actualData.push(events.length);
     }
   }
 };

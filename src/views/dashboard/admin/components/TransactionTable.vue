@@ -35,7 +35,10 @@ export default {
     },
     chengeStatus(status) {
       const tempDate = {
-        event_allow: "審核通過"
+        event_send: "送出審核中",
+        event_allow: "審核通過",
+        event_deny: "審核不通過",
+        event_over: "活動結束"
       };
       return tempDate[status];
     },

@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :lg="8" :sm="12" :xs="12" class="card-panel-col">
-      <div @click="handleSetLineChartData('newVisitis')" class="card-panel">
+      <div @click="handleSetLineChartData('newEvents')" class="card-panel">
         <div class="card-panel-icon-wrapper icon-documentation">
           <svg-icon class-name="card-panel-icon" icon-class="documentation"/>
         </div>
