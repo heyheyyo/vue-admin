@@ -90,7 +90,7 @@ export default {
     setDate() {
       const dataList = [];
       const Today = Date.now();
-      for (let i = 0; i < 7; i++) {
+      for (let i = -7; i < 7; i++) {
         dataList.push(
           dayjs(Today + i * 60 * 60 * 24 * 1000).format("YYYY/MM/DD")
         );

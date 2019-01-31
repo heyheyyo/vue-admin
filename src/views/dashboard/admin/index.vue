@@ -90,19 +90,20 @@ export default {
           console.log(error);
         });
     },
-    async setEvent() {
-      const allEvent = await this.getEvent();
-      const temp_count = [];
+    handleFilter(arr, feild) {
       let temp_list = [];
+      const temp_count = [];
+
       const start = new Date(
         new Date(new Date().toLocaleDateString()).getTime()
       );
-      for (let i = 0; i < 7; i++) {
-        temp_list = allEvent.filter(
+
+      for (let i = -7; i < 7; i++) {
+        temp_list = arr.filter(
           value =>
-            Date.parse(value.create_time) >=
+            Date.parse(value[feild]) >=
               Date.parse(start) + i * 24 * 60 * 60 * 1000 &&
-            Date.parse(value.create_time) <
+            Date.parse(value[feild]) <
               Date.parse(start) + (i + 1) * 24 * 60 * 60 * 1000
         );
         temp_count.push(temp_list.length);
@@ -110,42 +111,29 @@ export default {
 
       return temp_count;
     },
+    async setEvent() {
+      const allEvent = await this.getEvent();
+      const number = await this.handleFilter(allEvent, "create_time");
+      return number;
+    },
     async setAccount() {
       const allAccount = await this.getAccount();
-      const temp_count = [];
-      let temp_list = [];
-      const start = new Date(
-        new Date(new Date().toLocaleDateString()).getTime()
-      );
-      for (let i = 0; i < 7; i++) {
-        temp_list = allAccount.filter(
-          value =>
-            Date.parse(value.account_creat_at) >=
-              Date.parse(start) + i * 24 * 60 * 60 * 1000 &&
-            Date.parse(value.account_creat_at) <
-              Date.parse(start) + (i + 1) * 24 * 60 * 60 * 1000
-        );
-        temp_count.push(temp_list.length);
-      }
-
-      return temp_count;
+      const number = await this.handleFilter(allAccount, "account_create_at");
+      return number;
+    },
+    async setOrg() {
+      const allOrg = await this.getOrg();
+      const number = await this.handleFilter(allOrg, "create_time");
+      return number;
     }
   },
   async created() {
     const events = await this.setEvent();
     const accounts = await this.setAccount();
+    const orgs = await this.setOrg();
     lineChartData: lineChartData.newEvents.actualData = events;
     lineChartData: lineChartData.newAccounts.actualData = accounts;
-
-    // temp_params = {};
-    // for (let i = 0; i < 14; i++) {
-    //   temp_params["create_time[$gte]"] =
-    //     Date.parse(start) + i * 24 * 60 * 60 * 1000;
-    //   temp_params["create_time[$lt]"] =
-    //     Date.parse(start) + (i + 1) * 24 * 60 * 60 * 1000;
-    //   const orgs = await this.getOrg(temp_params);
-    //   lineChartData.newOrgs.actualData.push(orgs.length);
-    // }
+    lineChartData: lineChartData.newOrgs.actualData = orgs;
   }
 };
 </script>
