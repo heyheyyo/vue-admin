@@ -72,6 +72,40 @@ export const constantRouterMap = [
         meta: { title: 'GatherMaster', icon: 'dashboard', noCache: true }
       }
     ]
+  },
+  {
+    path: '/organizer',
+    component: Layout,
+    redirect: '/organizer/index',
+    meta: { title: '主辦單位管理', icon: 'peoples' },
+    children: [
+      {
+        path: '/organizer/add_organizer',
+        component: () => import('@/views/organizer/addOrg'),
+        name: 'addOrganizer',
+        meta: { title: '新增主辦單位', icon: 'peoples' }
+      },
+      {
+        path: '/organizer/organizer_list',
+        component: () => import('@/views/organizer/index'),
+        name: 'organizerList',
+        meta: { title: '主辦單位列表', icon: 'peoples' }
+      },
+      {
+        path: '/organizer/organizer_detail/:id',
+        component: () => import('@/views/organizer/viewOrg'),
+        name: 'organizerDetail',
+        meta: { title: '主辦單位細節', icon: 'peoples' },
+        hidden: true
+      },
+      {
+        path: '/organizer/edit_organizer/:id',
+        component: () => import('@/views/organizer/EditOrg'),
+        name: 'editOrganizer',
+        meta: { title: '編輯主辦單位', icon: 'peoples' },
+        hidden: true
+      }
+    ]
   }
   // {
   //   path: '/documentation',
